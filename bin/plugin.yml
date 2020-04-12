@@ -1,0 +1,46 @@
+name: Magicraft
+version: 1.0
+description: Fun plugin
+author: Tomahawkmissile
+main: com.gmail.tomahawkmissile2.magicraft.Main
+softdepend: [Vault]
+api-version: 1.15
+commands:
+  magicraft:
+    description: Base command
+    usage: /magicraft
+permissions:
+  magicraft.*:
+    description: Access all magicraft commands and features.
+    default: op
+    children:
+      magicraft.spawner.*: true
+      magicraft.gui.*: true
+  magicraft.help:
+    description: Access magicraft help page
+    default: true
+      
+  magicraft.spawner.*:
+    description: Access all spawner commands and features.
+    default: op
+    children:
+      magicraft.spawner.use: true
+      magicraft.spawner.priceExempt: true
+  magicraft.spawner.use:
+    description: Use the spawners.
+    default: true
+  magicraft.spawner.priceExempt:
+    description: Be exempt from prices.
+    default: op
+    children:
+      magicraft.spawner.use: true
+      
+  magicraft.gui.use:
+    description: Access the gui.
+    default: true
+  
+  magicraft.enchant:
+    description: Enchant items.
+    default: true
+      
+    

@@ -1,0 +1,216 @@
+package com.gmail.tomahawkmissile2.magicraft.command;
+
+import java.io.File;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.gmail.tomahawkmissile2.magicraft.Main;
+import com.gmail.tomahawkmissile2.magicraft.config.DefaultConfigValue;
+import com.gmail.tomahawkmissile2.magicraft.economy.Economy;
+import com.gmail.tomahawkmissile2.magicraft.registry.Permissions;
+import com.gmail.tomahawkmissile2.magicraft.registry.Registry;
+import com.gmail.tomahawkmissile2.magicraft.registry.Strings;
+import com.gmail.tomahawkmissile2.magicraft.ui.UI;
+import com.gmail.tomahawkmissile2.magicraft.utils.FileManager;
+
+public class CommandHandler implements CommandExecutor {
+
+	private String baseError = ChatColor.RED+"Error: "+ChatColor.DARK_RED;
+	private String success = ChatColor.GREEN+"Success: "+ChatColor.DARK_GREEN;
+	
+	String reg = "/magicraft registry <create | delete | add | remove | change | save | load | list> <tag> [arg2] [arg3]";
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if(cmd.getName().equalsIgnoreCase("magicraft")) {
+			Player player = (Player) sender;
+			switch(args.length) {
+			case 0:
+				this.sendHelp(player);
+				break;
+			case 1:
+				if(args[0].equalsIgnoreCase("help")) {
+					this.sendHelp(player);
+				} else if(args[0].equalsIgnoreCase("gui")) {
+					if(player.hasPermission(Permissions.GUI_USE) || player.isOp())
+						new UI().open(player);
+					else
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("reload")) {
+					if(player.isOp() || player.hasPermission(Permissions.CONFIG_RELOAD))
+						player.sendMessage(baseError+"The syntax is \'/magicraft reload <config | list>\'.");
+					else
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("eco")) {
+					if(player.isOp() || player.hasPermission(Permissions.ECONOMY_USE))
+						player.sendMessage(baseError+"/magicraft eco give <player | faction> <amount>");
+					else
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("enchant")) {
+					if(player.isOp() || player.hasPermission(Permissions.ENCHANT))
+						player.sendMessage(baseError+"/magicraft enchant <enchantment | list> <level>");
+					else 
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("registry")) {
+					if(player.isOp() || player.hasPermission(Permissions.REGISTRY_ALL))
+						player.sendMessage(baseError+reg);
+					else 
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else {
+					player.sendMessage(Strings.INVALID_ARGS);
+				}
+				break;
+			case 2:
+				if(args[0].equalsIgnoreCase("reload")) {
+					if(player.isOp() || player.hasPermission(Permissions.CONFIG_RELOAD)) {
+						if(args[1].equalsIgnoreCase("list")) {
+							player.sendMessage(ChatColor.DARK_AQUA+"-= Magicraft Config List =-");
+							player.sendMessage(ChatColor.GOLD+"---------------------------");
+							player.sendMessage(ChatColor.AQUA+"+ main: the main plugin config");
+							player.sendMessage(ChatColor.AQUA+"+ spawner: the spawner config");
+							player.sendMessage(ChatColor.AQUA+"+ customenchants: the custom enchantment config");
+						} else if(args[1].equalsIgnoreCase("main")) {
+							FileManager.refreshFile(new File(Main.plugin.getDataFolder()+"/config.yml"));
+						} else if(args[1].equalsIgnoreCase("spawner")) {
+							FileManager.refreshFile(new File(Main.plugin.getDataFolder()+"/spawners.yml"));
+						} else if(args[1].equalsIgnoreCase("customenchants")) {
+							FileManager.refreshFile(new File(Main.plugin.getDataFolder()+"/enchants.yml"));
+						}
+					} else player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("eco")) {
+					if(player.isOp() || player.hasPermission(Permissions.ECONOMY_USE))
+						player.sendMessage(baseError+"/magicraft eco give <player> <amount>");
+					else
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("enchant")) {
+					if(player.isOp() || player.hasPermission(Permissions.ENCHANT))
+						player.sendMessage(baseError+"/magicraft enchant <enchantment | list> <level>");
+					else 
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("registry")) {
+					if(player.isOp() || player.hasPermission(Permissions.REGISTRY_ALL)) {
+						if(args[1].equalsIgnoreCase("help")) {
+							player.sendMessage(baseError+reg);
+						} else if(args[1].equalsIgnoreCase("list")) {
+							player.sendMessage(ChatColor.DARK_GREEN+"Magicraft Registry List");
+							for(Registry r:Registry.getAll()) {
+								player.sendMessage(ChatColor.GREEN+r.getName());
+							}
+						}
+					} else {
+						player.sendMessage(Strings.PERMISSION_ERROR);
+					}
+				} else player.sendMessage(Strings.INVALID_ARGS);
+				break;
+			case 3:
+				if(args[0].equalsIgnoreCase("eco")) {
+					if(player.isOp() || player.hasPermission(Permissions.ECONOMY_USE))
+						player.sendMessage(baseError+"/magicraft eco give <player> <amount>");
+					else
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else if(args[0].equalsIgnoreCase("enchant")) {
+					if(player.isOp() || player.hasPermission(Permissions.ENCHANT)) {
+						//TODO
+					} else {
+						player.sendMessage(Strings.PERMISSION_ERROR);
+					}
+				} else if(args[0].equalsIgnoreCase("registry")) {
+					if(player.isOp() || player.hasPermission(Permissions.REGISTRY_ALL)) {
+						if(args[1].equalsIgnoreCase("create")) {
+							if(Registry.getByName(args[2])!=null) {
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_CREATE_EXISTS.getPath()));
+							} else {
+								Registry r = new Registry(args[2]);
+								r.finalize();
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_CREATE_SUCCESS.getPath()));
+							}
+						} else if(args[1].equalsIgnoreCase("delete")) {
+							if(Registry.getByName(args[2])!=null) {
+								Registry.getByName(args[2]).delete();
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_DELETE_SUCCESS.getPath()));
+							} else {
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_DELETE_FAIL.getPath()));
+							}
+						} else if(args[1].equalsIgnoreCase("remove")) {
+							Registry r = Registry.getByName(args[2]);
+							if(r!=null) {
+								r.remRegister(args[3]);
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_REMOVE_SUCCESS.getPath()));
+							} else {
+								player.sendMessage((String) Registry.getByName("config").getRegister(DefaultConfigValue.MESSAGE_REGISTRY_REMOVE_FAIL.getPath()));
+							}
+						} else player.sendMessage(Strings.INVALID_ARGS);
+					} else { 
+						player.sendMessage(Strings.PERMISSION_ERROR);
+					}
+				} else player.sendMessage(Strings.INVALID_ARGS);
+				break;
+			case 4:
+				if(args[0].equalsIgnoreCase("eco")) {
+					if(player.isOp() || player.hasPermission(Permissions.ECONOMY_USE)) {
+						if(args[1].equalsIgnoreCase("give")) {
+							for(Player p : Main.plugin.getServer().getOnlinePlayers()) {
+								if(p.getName().equals(args[2])) {
+									double amt;
+									try {
+										amt = Double.parseDouble(args[3]);
+									} catch(Exception e) {
+										player.sendMessage(baseError+"\'"+args[3]+"\' is not a valid number.");
+										break;
+									}
+									Economy e = new Economy();
+									if((e.getBalance(player)-amt)<e.getMinimumBalance()) {
+										player.sendMessage(baseError+"You do not have sufficient funds.");
+									} else {
+										e.withdrawPlayer(player, amt);
+										e.depositPlayer(p, amt);
+										player.sendMessage(success+"You have just payed "+p.getName()+" $"+args[3]+".");
+										p.sendMessage(ChatColor.GREEN+player.getName()+" has just paid you $"+args[3]);
+									}
+								} else {
+									player.sendMessage(baseError+"That player is not online.");
+								}
+							}
+						} else {
+							//TODO: other eco commands
+						}
+					} else {
+						player.sendMessage(Strings.PERMISSION_ERROR);
+					}
+				} else if(args[0].equalsIgnoreCase("registry")) {
+					if(player.isOp() || player.hasPermission(Permissions.REGISTRY_ALL))
+						player.sendMessage(baseError+reg);
+					else 
+						player.sendMessage(Strings.PERMISSION_ERROR);
+				} else player.sendMessage(Strings.INVALID_ARGS);
+				break;
+			case 5:
+				 if(args[0].equalsIgnoreCase("registry")) {
+						if(player.isOp() || player.hasPermission(Permissions.REGISTRY_ALL)) {
+							if(args[1].equalsIgnoreCase("add")) {
+								Registry r = Registry.getByName(args[2]);
+								if(r!=null) {
+									r.addRegister(args[3], args[4]);
+								} else {
+									player.sendMessage(baseError+"That registry does not exist!");
+								}
+							} else player.sendMessage(Strings.INVALID_ARGS);
+						} else { 
+							player.sendMessage(Strings.PERMISSION_ERROR);
+						}
+					} else player.sendMessage(Strings.INVALID_ARGS);
+				break;
+			default:
+				player.sendMessage(Strings.INVALID_ARGS);
+				break;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+}
