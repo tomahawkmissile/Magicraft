@@ -55,6 +55,21 @@ public class MagicItem {
 				return true;
 		return false;
 	}
+	public boolean hasMagicEnchantmentType(MagicEnchantmentType t) {
+		for(MagicEnchantment me : this.getEnchantments())
+			if(me.getType()==t)
+				return true;
+		return false;
+	}
+	public int getMagicEnchantmentLevel(MagicEnchantmentType t) {
+		if(this.hasMagicEnchantmentType(t)) {
+			for(MagicEnchantment me:this.getEnchantments()) {
+				if(me.getType()==t) return me.getLevel();
+			}
+		}
+		return 0;
+	}
+	
 	public List<MagicEnchantment> getEnchantments() {
 		List<MagicEnchantment> e = new ArrayList<MagicEnchantment>();;
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {

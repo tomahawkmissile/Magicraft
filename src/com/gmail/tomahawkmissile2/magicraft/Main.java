@@ -19,7 +19,7 @@ import com.gmail.tomahawkmissile2.magicraft.config.DefaultConfigValue;
 import com.gmail.tomahawkmissile2.magicraft.config.EnchantmentConfig;
 import com.gmail.tomahawkmissile2.magicraft.config.PlayerData;
 import com.gmail.tomahawkmissile2.magicraft.config.SpawnerConfig;
-import com.gmail.tomahawkmissile2.magicraft.enchantments.EnchantmentListener;
+import com.gmail.tomahawkmissile2.magicraft.enchantments.MagicEnchantment;
 import com.gmail.tomahawkmissile2.magicraft.registry.Registry;
 import com.gmail.tomahawkmissile2.magicraft.spawners.Spawner;
 import com.gmail.tomahawkmissile2.magicraft.spawners.SpawnerUI;
@@ -57,9 +57,10 @@ public class Main extends JavaPlugin implements Listener {
 		this.getServer().getPluginManager().registerEvents(new Spawner(), this);
 		this.getServer().getPluginManager().registerEvents(new UI(), this);
 		this.getServer().getPluginManager().registerEvents(new SpawnerUI(), this);
-		this.getServer().getPluginManager().registerEvents(new EnchantmentListener(), this);
 		
 		this.getCommand("magicraft").setExecutor(new CommandHandler());
+		
+		MagicEnchantment.registerAllMagicEnchantments();
 		
 		this.createCoreFiles();
 		this.setUnsetConfigurations();

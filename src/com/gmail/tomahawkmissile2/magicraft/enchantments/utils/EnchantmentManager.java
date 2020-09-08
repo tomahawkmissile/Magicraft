@@ -3,7 +3,7 @@ package com.gmail.tomahawkmissile2.magicraft.enchantments.utils;
 import com.gmail.tomahawkmissile2.magicraft.enchantments.data.MagicEnchantmentType;
 
 public class EnchantmentManager {
-
+	
 	public static String convertMagicEnchantmentToString(MagicEnchantmentType type) {
 		String s = "None";
 		switch(type) {
