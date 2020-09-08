@@ -14,9 +14,9 @@ public enum DefaultConfigValue {
 	SPAWN_YAW("spawn.location.yaw","UNSET"),
 	SPAWN_PITCH("spawn.location.pitch","UNSET"),
 	
-	MESSAGE_PERMISSION_ERROR("messages.permissions.error",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You do not have permission."),
-	MESSAGE_BALANCE_INSUFFICIENT("messages.economy.balance.insufficient",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You do not have sufficient funds."),
-	MESSAGE_SPAWN_EGG_ERROR("messages.spawner.egg.error",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You cannot change spawner types like this."),
+	MESSAGE_PERMISSION_ERROR("messages.permissions.error",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You do not have permission!"),
+	MESSAGE_BALANCE_INSUFFICIENT("messages.economy.balance.insufficient",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You do not have sufficient funds!"),
+	MESSAGE_SPAWN_EGG_ERROR("messages.spawner.egg.error",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"You cannot change spawner types like this!"),
 	
 	MESSAGE_REGISTRY_CREATE_EXISTS("messages.registry.create.exists",ChatColor.RED+"Error: "+ChatColor.DARK_RED+"That registry already exists."),
 	MESSAGE_REGISTRY_CREATE_SUCCESS("messages.registry.create.success",ChatColor.DARK_GREEN+"Registry created successfully."),
