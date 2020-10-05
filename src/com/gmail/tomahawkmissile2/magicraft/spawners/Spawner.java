@@ -212,7 +212,7 @@ public class Spawner implements Listener {
 							refund = SpawnerConfig.get(base+"."+this.getType().toString().toLowerCase())==null?"0":SpawnerConfig.get(base+"."+this.getType().toString().toLowerCase()).toString();
 							refundAmount = Double.parseDouble(s)-Double.parseDouble(refund);
 						}
-						if(EconomyManager.hasEnough(player, refundAmount)) {
+						if(EconomyManager.hasEnough(player, (Config.get("spawners.refund.enabled").toString().equals("true")?refundAmount+"":s))) {
 							if(SpawnerConfig.get(base+"."+this.getType().toString().toLowerCase())==null) {
 								
 							} else if(refundAmount>0) {
